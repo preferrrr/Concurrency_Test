@@ -13,9 +13,17 @@ public class OptimisticBoardService {
     private final OptimisticBoardRepository boardRepository;
 
     @Transactional
-    public void getBoardWithOptimisticLock(Long id) {
+    public int getBoardWithOptimisticLock(Long id) {
         OptimisticBoard board = boardRepository.findByBoardId(id).orElseThrow();
         board.addView();
+
+        return board.getView();
     }
 
+    public Long createBoard() {
+        OptimisticBoard board = OptimisticBoard.create();
+        boardRepository.save(board);
+
+        return board.getBoardId();
+    }
 }

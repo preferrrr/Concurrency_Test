@@ -9,11 +9,10 @@ public class OptimisticLockBoardSupport {
 
     private final OptimisticBoardService boardService;
 
-    public void getBoard(Long id) {
+    public int getBoard(Long id) {
         while (true) {
             try {
-                boardService.getBoardWithOptimisticLock(id);
-                break;
+                return boardService.getBoardWithOptimisticLock(id);
             } catch (Exception e) {
                 try {
                     Thread.sleep(50);

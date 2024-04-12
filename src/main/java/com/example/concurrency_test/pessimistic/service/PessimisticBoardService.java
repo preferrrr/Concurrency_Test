@@ -14,9 +14,18 @@ public class PessimisticBoardService {
     private final PessimisticBoardRepository boardRepository;
 
     @Transactional(readOnly = false)
-    public void getBoardWithPessimisticLock(Long id) {
+    public int getBoardWithPessimisticLock(Long id) {
         PessimisticBoard board = boardRepository.getBoardWithPessimisticLock(id).orElseThrow();
         board.addView();
+
+        return board.getView();
+    }
+
+    public Long create() {
+        PessimisticBoard board = PessimisticBoard.create();
+        boardRepository.save(board);
+
+        return board.getBoardId();
     }
 
 }
